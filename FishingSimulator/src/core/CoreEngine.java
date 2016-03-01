@@ -8,23 +8,27 @@ public class CoreEngine {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = WIDTH / 5 * 4;
 	public static final String TITLE = "FishingSimulator";
-	
-	
+
 	private boolean running;
+
+	private Game game;
 
 	public CoreEngine() {
 		Window.createWindow(WIDTH, HEIGHT, TITLE);
 		RenderUtils.initGL();
 		running = false;
 
+		game = new Game();
+
 	}
 
 	public void update() {
-
+		game.update();
 	}
 
 	public void render() {
 		RenderUtils.clearScreen();
+		game.render();
 		Window.render();
 	}
 
