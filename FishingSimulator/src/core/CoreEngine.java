@@ -56,6 +56,7 @@ public class CoreEngine {
 			lastTime = currentTime;
 
 			while (delta >= nsPerUpdate) {
+				Time.setDelta(delta);
 				delta -= nsPerUpdate;
 				update();
 				updates++;

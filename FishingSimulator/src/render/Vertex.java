@@ -1,6 +1,6 @@
 package render;
 
-import org.lwjgl.util.vector.Vector3f;
+import math.Vector3f;
 
 public class Vertex {
 

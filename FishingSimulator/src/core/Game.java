@@ -1,7 +1,7 @@
 package core;
 
-import org.lwjgl.util.vector.Vector3f;
 
+import math.Vector3f;
 import render.Mesh;
 import render.Shader;
 import render.Vertex;
@@ -10,10 +10,12 @@ public class Game {
 
 	private Mesh mesh;
 	private Shader shader;
+	private Transform transform;
 
 	public Game() {
 		mesh = new Mesh();
 		shader = new Shader();
+		transform = new Transform();
 
 		Vertex[] data = new Vertex[] { 
 				new Vertex(new Vector3f(-1, -1, 0)),
@@ -26,12 +28,10 @@ public class Game {
 
 		shader.addVertexShader(RessourceLoader.loadShader("vertex.vs"));
 		shader.addFragmentShader(RessourceLoader.loadShader("fragment.vs"));
-		
 		shader.compileShader();
-		shader.addUniform("test");
 		
-		
-		
+		shader.addUniform("transform");
+	
 
 	}
 	
@@ -40,11 +40,13 @@ public class Game {
 	public void update() {
 		temp+=Time.getDelta();
 		
-		shader.setUniformf("test", (float)Math.sin(temp));
+		transform.setTranslation((float)Math.sin(temp),0,0);
+		
 	}
 
 	public void render() {
 		shader.bind();
+		shader.setUniform("transform", transform.getTransformation());
 		mesh.draw();
 	}
 
