@@ -40,9 +40,13 @@ public class Game {
 	public void update() {
 		temp+=Time.getDelta();
 		
-		//transform.setTranslation((float)Math.sin(temp),0,0);
+		float sin = (float)Math.sin(temp);
+		float cos = (float)Math.cos(temp);
 		
-		transform.setRotation(0, 0, (float)Math.sin(temp) * 180);
+		transform.setTranslation(sin,0,0);
+		transform.setRotation(0, 0, sin * 180);
+		transform.setScale(sin, sin, sin);
+		
 		
 	}
 
