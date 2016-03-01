@@ -21,19 +21,46 @@ public class CoreEngine {
 	}
 
 	public void gameLoop() {
-		
-		
+
+		final double updatesPerSecond = 60.0;
+		final double nsPerUpdate = 1.0 / updatesPerSecond;
+
+		int frames = 0;
+		int updates = 0;
+
+		long lastTime = Time.getTimeNS();
+		long secTimer = Time.getTimeMS();
+
+		double delta = 0.0;
 
 		while (running) {
-			
-			if(Window.isCLoseRequested())
+
+			if (Window.isCLoseRequested())
 				stop();
-			
-			
-			update();
+
+			long currentTime = Time.getTimeNS();
+			delta += (currentTime - lastTime) / 1000000000.0;
+			lastTime = currentTime;
+
+			while (delta >= nsPerUpdate) {
+				delta -= nsPerUpdate;
+				update();
+				updates++;
+
+			}
+
 			render();
+			frames++;
+
+			if (Time.getTimeMS() - secTimer >= 1000) {
+				secTimer += 1000;
+				System.out.println("fps: " + frames + " ups: " + updates);
+				frames = 0;
+				updates = 0;
+			}
+
 		}
-		
+
 		cleanUp();
 
 	}
@@ -59,7 +86,7 @@ public class CoreEngine {
 		Window.destroy();
 
 	}
-	
+
 	public static void main(String[] args) {
 		new CoreEngine().start();
 	}
