@@ -6,30 +6,24 @@ import org.lwjgl.opengl.DisplayMode;
 
 public class Window {
 
-	private static boolean vsynced = false;
+	public static void createWindow(int width, int height, String title) {
 
-	public static void createWindow(int width, int height, boolean vsynced) {
-		Window.vsynced = vsynced;
-		DisplayMode dm = new DisplayMode(width, height);
+		Display.setTitle(title);
 		try {
+			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.create();
-			Display.setDisplayMode(dm);
-
-			if (vsynced)
-				Display.setVSyncEnabled(vsynced);
-
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	public static void update() {
+	public static void render() {
 		Display.update();
 	}
 
-	public static void destroy() {
-		Display.destroy();
+	public static boolean isCloseRequested() {
+		return Display.isCloseRequested();
 	}
 
 	public static int getWidth() {
@@ -40,8 +34,12 @@ public class Window {
 		return Display.getHeight();
 	}
 
-	public static boolean isCLoseRequested() {
-		return Display.isCloseRequested();
+	public static String getTitle() {
+		return Display.getTitle();
+	}
+
+	public static void destroyWindow() {
+		Display.destroy();
 	}
 
 }

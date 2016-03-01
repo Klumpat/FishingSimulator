@@ -1,21 +1,21 @@
 package core;
 
-import render.Loader;
-import render.Mesh;
-import render.Renderer;
+import render.RenderUtils;
 import render.Window;
 
 public class CoreEngine {
 
-	private boolean running;
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = WIDTH / 5 * 4;
+	public static final String TITLE = "FishingSimulator";
 	
-	Renderer renderer;
+	
+	private boolean running;
 
 	public CoreEngine() {
+		Window.createWindow(WIDTH, HEIGHT, TITLE);
+		RenderUtils.initGL();
 		running = false;
-		Window.createWindow(800, 600, false);
-		
-		renderer = new Renderer();
 
 	}
 
@@ -24,28 +24,8 @@ public class CoreEngine {
 	}
 
 	public void render() {
-		
-		renderer.prepare();
-		
-		float[] vertices = {
-				-0.5f, 0.5f, 0.0f,
-				-0.5f, -0.5f, 0.0f,
-				0.5f, -0.5f, 0.0f,
-				
-				0.5f, -0.5f, 0.0f,
-				0.5f, 0.5f, 0.0f,
-				-0.5f, 0.5f, 0.0f,
-		};
-		
-		Mesh mesh = Loader.loadToVAO(vertices);
-		
-		renderer.render(mesh);
-		
-		
-		
-		
-		
-		Window.update();
+		RenderUtils.clearScreen();
+		Window.render();
 	}
 
 	public void gameLoop() {
@@ -63,7 +43,7 @@ public class CoreEngine {
 
 		while (running) {
 
-			if (Window.isCLoseRequested())
+			if (Window.isCloseRequested())
 				stop();
 
 			long currentTime = Time.getTimeNS();
@@ -111,8 +91,6 @@ public class CoreEngine {
 	}
 
 	public void cleanUp() {
-		Window.destroy();
-		Loader.cleanUp();
 
 	}
 
