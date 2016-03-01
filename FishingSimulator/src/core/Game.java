@@ -1,44 +1,52 @@
 package core;
 
 
+import math.Vector2f;
+import math.Vector3f;
+import render.BasicShader;
+import render.Camera;
+import render.Material;
 import render.Mesh;
 import render.Shader;
+import render.Vertex;
 import render.Window;
 
 public class Game {
 
 	private Mesh mesh;
 	private Shader shader;
+	private Material material;
 	private Transform transform;
+	private Camera camera;
 
 	public Game() {
-		mesh = RessourceLoader.loadMesh("box.obj");
-		shader = new Shader();
+		mesh = new Mesh();
+		material = new Material(RessourceLoader.loadTexture("test.png"), new Vector3f(0,1,1));
+		shader = new BasicShader();
 		transform = new Transform();
+		camera = new Camera();
+
 		Transform.setProjection(70f,(float) Window.getWidth(), (float)Window.getHeight(), 0.1f, 1000f);
-
-//		Vertex[] vertices = new Vertex[] { 
-//				new Vertex(new Vector3f(-1, -1, 0)),
-//				new Vertex(new Vector3f(0, 1, 0)),
-//				new Vertex(new Vector3f(1, -1, 0)),
-//				new Vertex(new Vector3f(0, -1, 1)),
-//				
-//		};
-//		
-//		int[] indices = new int[]{
-//				0,1,3,
-//				3,1,2,
-//				2,1,0,
-//				0,2,3,
-//				
-//		};
-
-
-		shader.addVertexShader(RessourceLoader.loadShader("vertex.vs"));
-		shader.addFragmentShader(RessourceLoader.loadShader("fragment.vs"));
-		shader.compileShader();
+		Transform.setCamera(camera);
+		Vertex[] vertices = new Vertex[] { 
+				new Vertex(new Vector3f(-1, -1, 0),new Vector2f(0.0f, 0.0f)),
+				new Vertex(new Vector3f(0, 1, 0), new Vector2f(0.5f, 0.0f)),
+				new Vertex(new Vector3f(1, -1, 0), new Vector2f(1.0f, 0.0f)),
+				new Vertex(new Vector3f(0, -1, 1), new Vector2f(0.5f, 1.0f)),
+				
+		};
 		
-		shader.addUniform("transform");
+		int[] indices = new int[]{
+				0,1,3,
+				3,1,2,
+				2,1,0,
+				0,2,3,
+				
+		};
+
+
+		
+		mesh.addVertices(vertices, indices);
 	
 
 	}
@@ -46,13 +54,14 @@ public class Game {
 	float temp = 0.0f;
 	
 	public void update() {
+		camera.input();
 		temp+=Time.getDelta();
 		
 		float sin = (float)Math.sin(temp);
 		float cos = (float)Math.cos(temp);
 		
-		transform.setTranslation(sin,-0.5f,6);
-		transform.setRotation(sin * 10, 0, 0);
+		transform.setTranslation(0,-0.5f,6);
+		transform.setRotation(0, 0, 0);
 		//transform.setScale(sin, sin, sin);
 		
 		
@@ -61,7 +70,8 @@ public class Game {
 
 	public void render() {
 		shader.bind();
-		shader.setUniform("transform", transform.getProjectedTransformation());
+		shader.updateUniforms(transform.getTransformation(), transform.getProjectedTransformation(), material);
+	
 		mesh.draw();
 	}
 

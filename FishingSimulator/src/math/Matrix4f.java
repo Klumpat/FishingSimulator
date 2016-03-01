@@ -174,4 +174,23 @@ public class Matrix4f {
 			m[x][y] = value;
 		}
 
+		public Matrix4f InitCamera(Vector3f forward, Vector3f up) {
+			
+			Vector3f f = forward;
+			f = f.Normalized();
+			
+			Vector3f r = up;
+			r = r.Normalized();
+			r = r.Cross(f);
+			
+			Vector3f u = f.Cross(r);
+			
+			m[0][0] = r.GetX();		m[0][1] = r.GetY();		m[0][2] = r.GetZ();		m[0][3] = 0;
+			m[1][0] = u.GetX();		m[1][1] = u.GetY();		m[1][2] = u.GetZ();		m[1][3] = 0;
+			m[2][0] = f.GetX();		m[2][1] = f.GetY();		m[2][2] = f.GetZ();		m[2][3] = 0;
+			m[3][0] = 0;			m[3][1] = 0;			m[3][2] = 0;			m[3][3] = 1;
+
+			return this;
+		}
+
 }

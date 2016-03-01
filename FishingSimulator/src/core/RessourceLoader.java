@@ -1,15 +1,47 @@
 package core;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.newdawn.slick.opengl.TextureLoader;
+
 import math.Vector3f;
 import render.Mesh;
+import render.Texture;
 import render.Vertex;
 
 public class RessourceLoader {
+	
+	public static Texture loadTexture(String fileName){
+		
+		String[] splitArray = fileName.split("\\.");
+		String ext = splitArray[splitArray.length - 1];
+
+		if (!ext.equals("png")) {
+			System.err.println("Error: Fileformat not supported for Mesh: " + ext);
+			System.exit(1);
+		}
+		
+		
+		try {
+
+			int id = TextureLoader.getTexture(ext, new FileInputStream(new File("./res/textures/"+fileName))).getTextureID();
+			
+			return new Texture(id);
+			
+		} catch (Exception e) {
+			System.err.println("Error: Couldnt load texture: " + fileName);
+			System.exit(1);
+		}
+		
+		
+		return null;
+		
+	}
 
 	public static String loadShader(String fileName) {
 

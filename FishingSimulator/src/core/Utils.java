@@ -37,6 +37,8 @@ public class Utils {
 			buffer.put(vertices[i].getPosition().GetX());
 			buffer.put(vertices[i].getPosition().GetY());
 			buffer.put(vertices[i].getPosition().GetZ());
+			buffer.put(vertices[i].getTexCoord().GetX());
+			buffer.put(vertices[i].getTexCoord().GetY());
 		}
 
 		buffer.flip();

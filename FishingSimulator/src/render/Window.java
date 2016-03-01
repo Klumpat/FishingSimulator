@@ -12,6 +12,7 @@ public class Window {
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.create();
+			Display.setVSyncEnabled(true);
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}

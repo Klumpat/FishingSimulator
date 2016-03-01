@@ -66,6 +66,10 @@ public class Shader {
 	public void bind() {
 		glUseProgram(program);
 	}
+	
+	public void updateUniforms(Matrix4f worldMatrix, Matrix4f projectedMatrix, Material material){
+		
+	}
 
 	private void addProgram(String text, int type) {
 
