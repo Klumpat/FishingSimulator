@@ -2,6 +2,7 @@ package core;
 
 import math.Matrix4f;
 import math.Vector3f;
+import render.Camera;
 
 public class Transform {
 
@@ -10,6 +11,7 @@ public class Transform {
 	private static float width;
 	private static float height;
 	private static float fov;
+	private static Camera camera;
 
 	private Vector3f translation;
 	private Vector3f rotation;
@@ -25,20 +27,21 @@ public class Transform {
 
 		Matrix4f translationMatrix = new Matrix4f().InitTranslation(translation.GetX(), translation.GetY(),
 				translation.GetZ());
-		Matrix4f rotationMatrix = new Matrix4f().InitRotation(rotation.GetY(), rotation.GetY(), rotation.GetZ());
+		Matrix4f rotationMatrix = new Matrix4f().InitRotation(rotation.GetX(), rotation.GetY(), rotation.GetZ());
 		Matrix4f scaleMatrix = new Matrix4f().InitScale(scale.GetX(), scale.GetY(), scale.GetZ());
 
 		return translationMatrix.Mul(rotationMatrix.Mul(scaleMatrix));
 	}
 
 	public Matrix4f getProjectedTransformation() {
-		
+
 		Matrix4f transformationMatrix = getTransformation();
-		Matrix4f projectionMatrix = new Matrix4f().InitPerspective(fov, width/height, zNear, zFar);
-		
-		
-		
-		return projectionMatrix.Mul(transformationMatrix);
+		Matrix4f projectionMatrix = new Matrix4f().InitPerspective(fov, width / height, zNear, zFar);
+		Matrix4f cameraRotation = new Matrix4f().InitCamera(camera.getForward(), camera.getUp());
+		Matrix4f cameraTranslation = new Matrix4f().InitTranslation(-camera.getPosition().GetX(),
+				-camera.getPosition().GetY(), -camera.getPosition().GetZ());
+
+		return projectionMatrix.Mul(cameraRotation.Mul(cameraTranslation.Mul(transformationMatrix)));
 	}
 
 	public static void setProjection(float fov, float width, float height, float zNear, float zFar) {
@@ -79,6 +82,14 @@ public class Transform {
 
 	public void setScale(float x, float y, float z) {
 		setScale(new Vector3f(x, y, z));
+	}
+
+	public static Camera getCamera() {
+		return camera;
+	}
+
+	public static void setCamera(Camera camera) {
+		Transform.camera = camera;
 	}
 
 }
