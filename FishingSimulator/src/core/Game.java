@@ -28,15 +28,23 @@ public class Game {
 		shader.addFragmentShader(RessourceLoader.loadShader("fragment.vs"));
 		
 		shader.compileShader();
-		shader.bind();
+		shader.addUniform("test");
+		
+		
+		
 
 	}
-
+	
+	float temp = 0.0f;
+	
 	public void update() {
-
+		temp+=Time.getDelta();
+		
+		shader.setUniformf("test", (float)Math.sin(temp));
 	}
 
 	public void render() {
+		shader.bind();
 		mesh.draw();
 	}
 
