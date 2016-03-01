@@ -15,6 +15,7 @@ public class CoreEngine {
 
 	public CoreEngine() {
 		Window.createWindow(WIDTH, HEIGHT, TITLE);
+		System.out.println("OpenGL Version: "+RenderUtils.getGLVersion());
 		RenderUtils.initGL();
 		running = false;
 
