@@ -1,14 +1,21 @@
 package core;
 
+import render.Loader;
+import render.Mesh;
+import render.Renderer;
 import render.Window;
 
 public class CoreEngine {
 
 	private boolean running;
+	
+	Renderer renderer;
 
 	public CoreEngine() {
 		running = false;
 		Window.createWindow(800, 600, false);
+		
+		renderer = new Renderer();
 
 	}
 
@@ -17,6 +24,27 @@ public class CoreEngine {
 	}
 
 	public void render() {
+		
+		renderer.prepare();
+		
+		float[] vertices = {
+				-0.5f, 0.5f, 0.0f,
+				-0.5f, -0.5f, 0.0f,
+				0.5f, -0.5f, 0.0f,
+				
+				0.5f, -0.5f, 0.0f,
+				0.5f, 0.5f, 0.0f,
+				-0.5f, 0.5f, 0.0f,
+		};
+		
+		Mesh mesh = Loader.loadToVAO(vertices);
+		
+		renderer.render(mesh);
+		
+		
+		
+		
+		
 		Window.update();
 	}
 
@@ -84,6 +112,7 @@ public class CoreEngine {
 
 	public void cleanUp() {
 		Window.destroy();
+		Loader.cleanUp();
 
 	}
 
